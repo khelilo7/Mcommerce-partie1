@@ -116,5 +116,10 @@ public class ProductController {
         return marge;
     }
 
+    @GetMapping(value = "/ProduitsTrier")
+    public List<Product> trierProduitsParOrdreAlphabetique(){
+        return productDao.findAllByOrderByNomAsc();
+    }
+
 
 }
