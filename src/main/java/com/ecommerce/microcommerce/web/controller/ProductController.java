@@ -2,6 +2,7 @@ package com.ecommerce.microcommerce.web.controller;
 
 import com.ecommerce.microcommerce.dao.ProductDao;
 import com.ecommerce.microcommerce.model.Product;
+import com.ecommerce.microcommerce.web.exceptions.ProduitGratuitException;
 import com.ecommerce.microcommerce.web.exceptions.ProduitIntrouvableException;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
@@ -73,6 +74,7 @@ public class ProductController {
 
         if (productAdded == null)
             return ResponseEntity.noContent().build();
+        if (productAdded.getPrix() == 0) throw new ProduitGratuitException("Le produit que vous voulez ajouter contient un prix 0 veuillez change le prix.");
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -92,7 +94,10 @@ public class ProductController {
     @PutMapping (value = "/Produits")
     public void updateProduit(@RequestBody Product product) {
 
+        if (product.getPrix() == 0) throw new ProduitGratuitException("Le produit que vous voulez ajouter contient un prix 0 veuillez change le prix.");
+
         productDao.save(product);
+
     }
 
 
